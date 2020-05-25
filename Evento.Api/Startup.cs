@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Evento.Infrastructure.Settings;
+using Microsoft.IdentityModel.Logging;
 
 namespace Evento
 {
@@ -27,15 +28,21 @@ namespace Evento
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-             services.AddControllers().AddJsonOptions(options =>
+            IdentityModelEventSource.ShowPII = true;
+
+            services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.WriteIndented = true;
             });
+            services.AddAuthorization(x => x.AddPolicy("HasAdminRole", p=> p.RequireRole("admin")));
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITicketService, TicketService>();
             services.AddSingleton(AutoMapperConfig.Initialize());
+            services.AddSingleton<IJwtHandler, JwtHandler>();
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
             // Pobranie appsetingsow (appsetings.json)
             var appSettingsSection = Configuration.GetSection(typeof(AppSettings).Name);

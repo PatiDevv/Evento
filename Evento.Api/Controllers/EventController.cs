@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace Evento.Api.Controllers
 {
     [Route("[controller]")]
-    public class EventController : Controller
+    public class EventController : ApiControllerBase
     {
         private readonly IEventService _eventService;
         public EventController(IEventService eventService)
@@ -40,6 +40,7 @@ namespace Evento.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "HasAdminRole")]
         public async Task<IActionResult> Post([FromBody]CreateEvent command)
         {
             command.EventId = Guid.NewGuid();
@@ -52,6 +53,7 @@ namespace Evento.Api.Controllers
 
         // /events/ {id} -> HTTP PUT
         [HttpPut("{eventId}")]
+        [Authorize(Policy = "HasAdminRole")]
         public async Task<IActionResult> Put(Guid eventId, [FromBody]UpdateEvent command)
         {
             await _eventService.UpdateAsync(eventId, command.Name, command.Description);
@@ -62,6 +64,7 @@ namespace Evento.Api.Controllers
 
         // /events/ {id}
         [HttpDelete("{eventId}")]
+        [Authorize(Policy = "HasAdminRole")]
         public async Task<IActionResult> Delete(Guid eventId)
         {
             await _eventService.DeleteAsync(eventId);

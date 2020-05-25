@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Evento.Core.Domain
 {
@@ -66,6 +67,35 @@ namespace Evento.Core.Domain
                 seating++;
             }
         }
+
+        public void PurchaseTickets(User user, int amount)
+        {
+            if(AvaliableTickets.Count()< amount)
+            {
+                throw new Exception($"Not enough avaliable tickets to purchase ({amount}) by user: '{user.Name}'.");
+            }
+            var tickets = AvaliableTickets.Take(amount);
+            foreach(var ticket in tickets)
+            {
+                ticket.Purchase(user);
+            }
+        }
+
+        public void CancelPurchasedTickets(User user, int amount)
+        {
+            var tickets = GetTicketsPurchasedByUser(user);
+            if (tickets.Count() < amount)
+            {
+                throw new Exception($"Not enough purchased tickets to be canceled ({amount}) by user: '{user.Name}'");
+            }
+            foreach(var ticket in tickets.Take(amount))
+            {
+                ticket.Cancel();
+            }
+        }
+
+        public IEnumerable<Ticket> GetTicketsPurchasedByUser(User user)
+            => PurchasdTickets.Where(x => x.UserId == user.Id);
 
     }
 }
