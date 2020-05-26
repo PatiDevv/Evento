@@ -33,7 +33,7 @@ namespace Evento
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             IdentityModelEventSource.ShowPII = true;
 
@@ -85,13 +85,11 @@ namespace Evento
                     ValidIssuer = appSettings.Issuer
                 };
             });
+        }
 
-            var builder = new ContainerBuilder();
-            builder.Populate(services);
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
             builder.RegisterType<EventRepository>().As<IEventRepository>().InstancePerLifetimeScope();
-            Conteiner = builder.Build();
-
-            return new AutofacServiceProvider(Conteiner);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
