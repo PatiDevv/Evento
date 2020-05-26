@@ -3,6 +3,7 @@ using Evento.Core.Domain;
 using Evento.Core.Repositories;
 using Evento.Infrastructure.DTO;
 using Evento.Infrastructure.Extensions;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Evento.Infrastructure.Services
 {
     public class UserService : IUserService
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IUserRepository _userRepository;
         private readonly IJwtHandler _jwtHandler;
         private readonly IMapper _mapper;
@@ -38,6 +40,7 @@ namespace Evento.Infrastructure.Services
             }
             user = new User(userId, role, name, email, password);
             await _userRepository.AddAsync(user);
+            Logger.Trace($"Zarejestrował sie nowy uzytkownik. Email: {email}, Nazwa: {name}");
         }
         public async Task<TokenDto> LoginAsync(string email, string password)
         {
@@ -53,6 +56,7 @@ namespace Evento.Infrastructure.Services
 
             var jwt = _jwtHandler.CreateToken(user.Id, user.Role);
 
+            Logger.Trace($"Zalogował sie uzytkownik. Email: {email}");
             return new TokenDto
             {
                 Token = jwt.Token,
@@ -60,7 +64,5 @@ namespace Evento.Infrastructure.Services
                 Role = user.Role
             };
         }
-
-        
     }
 }
