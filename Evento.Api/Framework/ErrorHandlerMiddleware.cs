@@ -2,8 +2,6 @@
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -16,7 +14,6 @@ namespace Evento.Api.Framework
         public ErrorHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
-
         }
 
         public async Task Invoke(HttpContext context)

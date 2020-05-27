@@ -110,13 +110,12 @@ namespace Evento
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseErrorHandler();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
             SeedData(app);
-            app.UseErrorHandler();
             applicationLifetime.ApplicationStopped.Register(() => Conteiner.Dispose()); 
         }
 

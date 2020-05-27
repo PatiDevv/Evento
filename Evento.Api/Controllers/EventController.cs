@@ -58,6 +58,10 @@ namespace Evento.Api.Controllers
         [Authorize(Policy = "HasAdminRole")]
         public async Task<IActionResult> Post([FromBody]CreateEvent command)
         {
+            if (command == null)
+            {
+                throw new ArgumentException("Paramerets can not be null");
+            }
             command.EventId = Guid.NewGuid();
             await _eventService.CreateAsync(command.EventId, command.Name, command.Description, command.StartDate, command.EndDate);
             await _eventService.AddTicketsAsync(command.EventId, command.Tickets, command.Price);
