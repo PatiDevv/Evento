@@ -12,13 +12,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evento.Infrastructure", "Ev
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evento.Api", "Evento.Api\Evento.Api.csproj", "{EF5746BF-8E18-4BA8-AF94-960332BE2BF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evento.Tests", "Evento.Tests\Evento.Tests.csproj", "{0B9513B4-C4B5-4F6B-86F7-C8F553A4F70D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evento.Tests", "Evento.Tests\Evento.Tests.csproj", "{0B9513B4-C4B5-4F6B-86F7-C8F553A4F70D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FCF39B11-A834-4D54-80A6-9CF555C9BF03} = {FCF39B11-A834-4D54-80A6-9CF555C9BF03}
 		{C21DC576-D2A9-4E4E-B282-2355E57842D7} = {C21DC576-D2A9-4E4E-B282-2355E57842D7}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evento.Tests.EndToEnd", "Evento.Tests.EndToEnd\Evento.Tests.EndToEnd.csproj", "{1246AB99-4AB9-4D94-A220-D45D18A0CEE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Evento.Tests.EndToEnd", "Evento.Tests.EndToEnd\Evento.Tests.EndToEnd.csproj", "{1246AB99-4AB9-4D94-A220-D45D18A0CEE8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EF5746BF-8E18-4BA8-AF94-960332BE2BF6} = {EF5746BF-8E18-4BA8-AF94-960332BE2BF6}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
