@@ -20,6 +20,7 @@ using System;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using IApplicationLifetime = Microsoft.Extensions.Hosting.IHostApplicationLifetime;
+using Evento.Api.Framework;
 
 namespace Evento
 {
@@ -115,6 +116,7 @@ namespace Evento
                 endpoints.MapControllers();
             });
             SeedData(app);
+            app.UseErrorHandler();
             applicationLifetime.ApplicationStopped.Register(() => Conteiner.Dispose()); 
         }
 
