@@ -48,9 +48,12 @@ namespace Evento
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<IDataInitializer, DataInitializer>();
             services.AddSingleton(AutoMapperConfig.Initialize());
             services.AddSingleton<IJwtHandler, JwtHandler>();
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
+            services.Configure<AppSettings>(Configuration.GetSection("app"));
+
 
             services.AddLogging(a =>
             {
@@ -60,12 +63,12 @@ namespace Evento
             });
 
             // Pobranie appsetingsow (appsetings.json)
-            var appSettingsSection = Configuration.GetSection(typeof(AppSettings).Name);
+            var jwtSettingsSection = Configuration.GetSection(typeof(JwtSettings).Name);
 
             // Zmapowanie appsetingsów na klase AppSettings
-            var appSettings = appSettingsSection.Get<AppSettings>();
+            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
 
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
 
             services.AddAuthentication(x =>
             {
@@ -82,7 +85,7 @@ namespace Evento
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
-                    ValidIssuer = appSettings.Issuer
+                    ValidIssuer = jwtSettings.Issuer
                 };
             });
         }
@@ -111,7 +114,20 @@ namespace Evento
             {
                 endpoints.MapControllers();
             });
-            applicationLifetime.ApplicationStopped.Register(() => Conteiner.Dispose());
+            SeedData(app);
+            applicationLifetime.ApplicationStopped.Register(() => Conteiner.Dispose()); 
+        }
+
+        private void SeedData(IApplicationBuilder app)
+        {
+            var appSettingsSection = Configuration.GetSection(typeof(AppSettings).Name);
+            var settings = appSettingsSection.Get<AppSettings>();
+            if(settings.SeedData)
+            {
+                var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
+                dataInitializer.SeedAsync();
+            }
+            
         }
     }
 }

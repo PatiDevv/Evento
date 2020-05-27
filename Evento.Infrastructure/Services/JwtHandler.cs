@@ -12,9 +12,9 @@ namespace Evento.Infrastructure.Services
 {
     public class JwtHandler : IJwtHandler
     {
-        private readonly AppSettings _appSettings;
+        private readonly JwtSettings _appSettings;
 
-        public JwtHandler(IOptions<AppSettings> appsettings)
+        public JwtHandler(IOptions<JwtSettings> appsettings)
         {
             _appSettings = appsettings.Value;
         }
