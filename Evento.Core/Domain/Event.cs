@@ -9,6 +9,21 @@ namespace Evento.Core.Domain
     {
         private ISet<Ticket> _tickets = new HashSet<Ticket>();
 
+
+        public string Name { get; protected set; }
+        public string Description { get; protected set; }
+        public DateTime CreatedAt { get; protected set; }
+        public DateTime StartDate { get; protected set; }
+        public DateTime EndDate { get; protected set; }
+        public DateTime UpdatedAt { get; protected set; }
+
+        public IEnumerable<Ticket> Tickets => _tickets;
+        public IEnumerable<Ticket> PurchasdTickets => Tickets.Where(x => x.Purchased);
+        //public IEnumerable<Ticket> PurchasdTickets => Tickets.Where(x => !x.Purchased);
+        public IEnumerable<Ticket> AvaliableTickets => Tickets.Except(PurchasdTickets);
+
+
+
         protected Event()
         {
         }
@@ -53,18 +68,6 @@ namespace Evento.Core.Domain
             Description = description;
             UpdatedAt = DateTime.UtcNow;
         }
-
-        public string Name { get; protected set; }
-        public string Description { get; protected set; }
-        public DateTime CreatedAt { get; protected set; }
-        public DateTime StartDate { get; protected set; }
-        public DateTime EndDate { get; protected set; }
-        public DateTime UpdatedAt { get; protected set; }
-
-        public IEnumerable<Ticket> Tickets => _tickets;
-        public IEnumerable<Ticket> PurchasdTickets => Tickets.Where(x => x.Purchased);
-        //public IEnumerable<Ticket> PurchasdTickets => Tickets.Where(x => !x.Purchased);
-        public IEnumerable<Ticket> AvaliableTickets => Tickets.Except(PurchasdTickets);
 
 
 
