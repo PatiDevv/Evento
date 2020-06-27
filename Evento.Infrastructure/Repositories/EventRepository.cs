@@ -11,7 +11,6 @@ namespace Evento.Infrastructure.Repositories
     public class EventRepository : IEventRepository
     {
         private static readonly ISet<Event> _events = new HashSet<Event>
-
         {
             new Event(Guid.NewGuid(), "Event 1", "Event 1 description", DateTime.UtcNow.AddHours(2), DateTime.UtcNow.AddHours(4)),
             new Event(Guid.NewGuid(), "Event 2", "Event 2 description", DateTime.UtcNow.AddHours(5), DateTime.UtcNow.AddHours(10))

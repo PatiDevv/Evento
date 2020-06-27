@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Evento.Infrastructure.Mappers
 {
-    public static  class AutoMapperConfig
+    public static class AutoMapperConfig
     {
         public static IMapper Initialize()
         => new MapperConfiguration(cfg =>

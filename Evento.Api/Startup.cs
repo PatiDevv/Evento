@@ -16,9 +16,7 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using NLog.Web;
-using System;
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using IApplicationLifetime = Microsoft.Extensions.Hosting.IHostApplicationLifetime;
 using Evento.Api.Framework;
 
